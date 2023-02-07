@@ -1,4 +1,4 @@
-package io.extremum.functions.api.triggerTable
+package io.extremum.functions.api.triggertable
 
 internal object TriggerTableParser {
 

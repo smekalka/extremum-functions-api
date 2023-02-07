@@ -1,4 +1,4 @@
-package io.extremum.functions.api.triggerTable
+package io.extremum.functions.api.triggertable
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.extremum.functions.api.url.UrlsHolder

@@ -1,4 +1,4 @@
-package io.extremum.functions.api.triggerTable
+package io.extremum.functions.api.triggertable
 
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat

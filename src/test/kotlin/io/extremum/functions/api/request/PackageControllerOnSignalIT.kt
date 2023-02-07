@@ -3,7 +3,7 @@ package io.extremum.functions.api.request
 import io.extremum.functions.api.keycloak.CredentialService
 import io.extremum.functions.api.request.model.CallSignalBody
 import io.extremum.functions.api.request.model.EventMetadata
-import io.extremum.functions.api.triggerTable.TriggerTableService
+import io.extremum.functions.api.triggertable.TriggerTableService
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

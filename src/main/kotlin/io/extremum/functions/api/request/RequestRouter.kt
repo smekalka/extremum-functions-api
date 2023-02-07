@@ -8,8 +8,8 @@ import io.extremum.functions.api.request.model.CallFunctionBody
 import io.extremum.functions.api.request.model.CallSignalBody
 import io.extremum.functions.api.request.model.CallStorageTriggerBody
 import io.extremum.functions.api.request.model.CallTriggerBody
-import io.extremum.functions.api.triggerTable.FunctionsOnSignalResolver
-import io.extremum.functions.api.triggerTable.FunctionsOnStorageTriggerResolver
+import io.extremum.functions.api.triggertable.FunctionsOnSignalResolver
+import io.extremum.functions.api.triggertable.FunctionsOnStorageTriggerResolver
 import io.extremum.model.tools.mapper.MapperUtils.convertToMap
 import io.extremum.model.tools.mapper.MapperUtils.convertValue
 import org.springframework.stereotype.Service

@@ -1,7 +1,7 @@
-package io.extremum.functions.api.triggerTable
+package io.extremum.functions.api.triggertable
 
 import io.extremum.functions.api.function.FunctionsService
-import io.extremum.functions.api.triggerTable.TriggerTableParser.parseTriggerTable
+import io.extremum.functions.api.triggertable.TriggerTableParser.parseTriggerTable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

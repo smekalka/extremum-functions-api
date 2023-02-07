@@ -1,4 +1,4 @@
-package io.extremum.functions.api.triggerTable
+package io.extremum.functions.api.triggertable
 
 import io.extremum.functions.api.function.FunctionsService
 import kotlinx.coroutines.runBlocking

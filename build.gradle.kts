@@ -9,7 +9,7 @@ plugins {
 
 }
 
-val artifactVersion = "0.0.12"
+val artifactVersion = "0.0.13"
 val artifact = "functions-api"
 val extremumGroup = "io.extremum"
 val releasesRepoUrl = "https://artifactory.extremum.monster/artifactory/extremum-releases/"
