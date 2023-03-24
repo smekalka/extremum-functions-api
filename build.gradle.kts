@@ -1,20 +1,21 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.0.1"
+    id("org.springframework.boot") version "3.0.0"
     id("io.spring.dependency-management") version "1.1.0"
     kotlin("jvm") version "1.7.21"
     kotlin("plugin.spring") version "1.7.21"
+    java
     `maven-publish`
-
+    signing
 }
 
-val artifactVersion = "0.0.13"
-val artifact = "functions-api"
 val extremumGroup = "io.extremum"
-val releasesRepoUrl = "https://artifactory.extremum.monster/artifactory/extremum-releases/"
-val snapshotsRepoUrl = "https://artifactory.extremum.monster/artifactory/extremum-snapshots/"
-val extremumToolsVersion = "0.0.4"
+val extremumVersion = "3.0.0"
+val artifact = "functions-api"
+val artifactDescription = "Api for functions' package"
+val artifactUrl = "github.com/smekalka/extremum-functions-api"
+val artifactVersion = extremumVersion
 
 group = extremumGroup
 version = artifactVersion
@@ -23,30 +24,13 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 repositories {
     mavenCentral()
     mavenLocal()
-    maven {
-        url = uri(snapshotsRepoUrl)
-        credentials {
-            username = System.getenv("ARTIFACTORY_USER")
-            password = System.getenv("ARTIFACTORY_PASSWORD")
-        }
-        mavenContent {
-            snapshotsOnly()
-        }
-    }
-    maven {
-        url = uri(releasesRepoUrl)
-        credentials {
-            username = System.getenv("ARTIFACTORY_USER")
-            password = System.getenv("ARTIFACTORY_PASSWORD")
-        }
-    }
 }
 
 dependencies {
-    implementation("io.extremum:extremum-shared-models:2.1.17-SNAPSHOT")
-    implementation("io.extremum.functions:xdoc-java:1.0.6")
-    implementation("io.extremum:extremum-model-tools:$extremumToolsVersion")
-    testImplementation("io.extremum:extremum-test-tools:$extremumToolsVersion")
+    implementation("io.extremum:extremum-shared-models:$extremumVersion")
+    implementation("io.extremum:xdoc-java:$extremumVersion")
+    implementation("io.extremum:extremum-model-tools:$extremumVersion")
+    testImplementation("io.extremum:extremum-test-tools:$extremumVersion")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework:spring-webflux")
@@ -73,9 +57,9 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-val sourcesJar by tasks.registering(Jar::class) {
-    classifier = "sources"
-    from(sourceSets.main.get().allSource)
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 publishing {
@@ -86,18 +70,60 @@ publishing {
             version = artifactVersion
 
             from(components["java"])
-        }
 
-        repositories {
-            maven {
-                val isReleaseVersion = !(version as String).endsWith("-SNAPSHOT")
-                url = uri(if (isReleaseVersion) releasesRepoUrl else snapshotsRepoUrl)
-                credentials {
-                    username = System.getenv("ARTIFACTORY_USER")
-                    password = System.getenv("ARTIFACTORY_PASSWORD")
+            pom {
+                name.set(artifact)
+                description.set(artifactDescription)
+                url.set("https://$artifactUrl")
+                inceptionYear.set("2022")
+
+                scm {
+                    url.set("https://$artifactUrl")
+                    connection.set("scm:https://$artifactUrl.git")
+                    developerConnection.set("scm:git://$artifactUrl.git")
+                }
+
+                licenses {
+                    license {
+                        name.set("Business Source License 1.1")
+                        url.set("https://$artifactUrl/blob/develop/LICENSE.md")
+                        distribution.set("repo")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("SherbakovaMA")
+                        name.set("Maria Sherbakova")
+                        email.set("m.sherbakova@smekalka.com")
+                    }
                 }
             }
         }
+    }
+
+    repositories {
+        maven {
+            name = "OSSRH"
+            val releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            val snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            val isReleaseVersion = !(version as String).endsWith("-SNAPSHOT")
+            url = uri(if (isReleaseVersion) releasesRepoUrl else snapshotsRepoUrl)
+            credentials {
+                username = System.getProperty("ossrhUsername")
+                password = System.getProperty("ossrhPassword")
+            }
+        }
+    }
+}
+
+signing {
+    sign(publishing.publications["maven"])
+}
+
+tasks.javadoc {
+    if (JavaVersion.current().isJava9Compatible) {
+        (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
     }
 }
 
