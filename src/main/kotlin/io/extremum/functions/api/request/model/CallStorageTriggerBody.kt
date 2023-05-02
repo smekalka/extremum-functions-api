@@ -13,8 +13,8 @@ data class CallStorageTriggerBody(
     ) {
         fun toParametersInstance(): StorageTriggerParameters.Instance = StorageTriggerParameters.Instance(
             id = eventMetadata.eventId,
+            type = getType(eventMetadata.eventType),
             created = eventMetadata.createdAt,
-            operation = getOperation(eventMetadata.eventType),
             key = details.bucketId,
             meta = StorageTriggerParameters.Meta(
                 trace = eventMetadata.tracingContext?.traceId ?: ""
@@ -30,9 +30,19 @@ data class CallStorageTriggerBody(
     }
 
     companion object {
+        fun getType(rawEventType: String): String {
+            val last = getLastPart(rawEventType)
+            return "extremum.storage.$last"
+        }
+
         fun getOperation(rawEventType: String): String {
+            val last = getLastPart(rawEventType)
+            return last.removePrefix("Object").lowercase()
+        }
+
+        private fun getLastPart(rawEventType: String): String {
             val split = rawEventType.split(".")
-            return split[4].removePrefix("Object").lowercase()
+            return split.last()
         }
     }
 }

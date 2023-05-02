@@ -24,7 +24,7 @@ data class SignalParameters(
     )
 
     private companion object {
-        const val DEFAULT_TYPE = "Signal"
+        const val DEFAULT_TYPE = "extremum.exchange.Signal"
         const val DEFAULT_KIND = "regular"
     }
 }

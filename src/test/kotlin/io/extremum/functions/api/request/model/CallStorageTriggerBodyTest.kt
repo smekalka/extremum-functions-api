@@ -1,6 +1,7 @@
 package io.extremum.functions.api.request.model
 
 import io.extremum.functions.api.function.model.StorageTriggerParameters
+import io.extremum.functions.api.request.model.CallStorageTriggerBody.Companion.getType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.util.Date
@@ -29,7 +30,7 @@ class CallStorageTriggerBodyTest {
         val exp = StorageTriggerParameters.Instance(
             id = eventId,
             created = createdAt,
-            operation = "create",
+            type = "extremum.storage.ObjectCreate",
             key = bucketId,
             meta = StorageTriggerParameters.Meta(
                 trace = ""
@@ -39,8 +40,16 @@ class CallStorageTriggerBodyTest {
     }
 
     @Test
+    fun getType() {
+        assertEquals("extremum.storage.ObjectDelete", getType("yandex.cloud.events.storage.ObjectDelete"))
+        assertEquals("extremum.storage.ObjectCreate", getType("yandex.cloud.events.storage.ObjectCreate"))
+        assertEquals("extremum.storage.ObjectDelete", getType("extremum.storage.ObjectDelete"))
+    }
+
+    @Test
     fun getOperation() {
         assertEquals("delete", CallStorageTriggerBody.getOperation("yandex.cloud.events.storage.ObjectDelete"))
         assertEquals("create", CallStorageTriggerBody.getOperation("yandex.cloud.events.storage.ObjectCreate"))
+        assertEquals("delete", CallStorageTriggerBody.getOperation("extremum.storage.ObjectDelete"))
     }
 }

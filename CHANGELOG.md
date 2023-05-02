@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Change default types for signal parameters
+- Change type format for storage trigger parameters
+- Remove operation from storage trigger parameter
+- Improve Readme
+
 ## [3.0.0] - 2023-03-24
 
 ### Added

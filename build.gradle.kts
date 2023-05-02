@@ -15,7 +15,8 @@ val extremumVersion = "3.0.0"
 val artifact = "functions-api"
 val artifactDescription = "Api for functions' package"
 val artifactUrl = "github.com/smekalka/extremum-functions-api"
-val artifactVersion = extremumVersion
+val artifactVersion = "3.2.0-rc.1"
+val extremumToolsVersion = "3.2.0-rc.1"
 
 group = extremumGroup
 version = artifactVersion
@@ -29,8 +30,8 @@ repositories {
 dependencies {
     implementation("io.extremum:extremum-shared-models:$extremumVersion")
     implementation("io.extremum:xdoc-java:$extremumVersion")
-    implementation("io.extremum:extremum-model-tools:$extremumVersion")
-    testImplementation("io.extremum:extremum-test-tools:$extremumVersion")
+    implementation("io.extremum:extremum-model-tools:$extremumToolsVersion")
+    testImplementation("io.extremum:extremum-test-tools:$extremumToolsVersion")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework:spring-webflux")
