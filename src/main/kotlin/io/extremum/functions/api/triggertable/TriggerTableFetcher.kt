@@ -14,29 +14,27 @@ import java.util.logging.Logger
 @Service
 internal class TriggerTableFetcher(
     urlsHolder: UrlsHolder,
-    @Value("\${xAppId}")
-    private val xAppId: String,
+    @Value("\${extremum.functions.api.consul.trigger.table.path}")
+    private val triggerTablePath: String,
 ) {
 
     private val logger = Logger.getLogger(this::class.qualifiedName)
 
-    private val url = urlsHolder.consulUrl
-
-    private val uri = "/v1/kv/trigger_table_app${xAppId}"
+    private val uri = urlsHolder.consulUri
 
     private val webClient: WebClient = WebClient.builder()
-        .baseUrl(url)
+        .baseUrl(uri)
         .build()
 
     suspend fun getTriggerTableString(): String =
         webClient
             .get()
-            .uri(uri)
+            .uri(triggerTablePath)
             .awaitExchange { response ->
                 val statusCode = response.statusCode()
                 if (statusCode != HttpStatus.OK) {
                     val illegalStateException =
-                        IllegalStateException("Request to consul for trigger table $url$uri failed with code $statusCode")
+                        IllegalStateException("Request to consul for trigger table $uri$triggerTablePath failed with code $statusCode")
                     logger.severe(illegalStateException.message)
                     throw illegalStateException
                 }

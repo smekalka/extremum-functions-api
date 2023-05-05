@@ -90,15 +90,46 @@ class NumberFunction : BasePackageFunction {
  - Метод может возвращать любое значение, в том числе ```nullable```, или не возвращать вовсе, если не требуется.
 
 **4. Добавление параметров в application.properties**
-Или в переменные окружения контейнера
+
+#### Основные параметры
+
 ```properties
-xAppId=
-apiBaseUrl=
-serviceClientId=
-serviceClientSecret=
-keycloakUri=
-groundUri=
+extremum.functions.api.xAppId=
+extremum.functions.api.baseUrl=
 ```
+```extremum.ground.client.xAppId``` - id приложения (далее ```xAppId```)
+
+```extremum.ground.client.baseUrl``` - основной url приложения (далее ```baseUrl```). Например, ```https://api.aj84.y.extremum.io```
+
+Если их не указывать, то они заполнятся из переменных среды ```xAppId``` и ```apiBaseUrl``` соответственно.
+
+#### Параметры для consul
+
+```properties
+extremum.functions.api.consul.uri=
+extremum.functions.api.consul.trigger.table.path=
+```
+
+```extremum.functions.api.consul.uri``` - uri консула. Необязательный параметр. Если не указывать, то он будет сформирован из ```baseUrl```.
+
+```extremum.functions.api.consul.trigger.table.path``` - дополнительный путь в uri консула до trigger table. 
+По умолчанию ```/v1/kv/trigger_table_app${xAppId}```, где ```xAppId``` - переменная среды.
+
+#### Параметры для keycloak
+
+```properties
+extremum.functions.api.keycloak.uri=
+extremum.functions.api.keycloak.get.token.path=
+extremum.functions.api.keycloak.serviceClientId=
+extremum.functions.api.keycloak.serviceClientSecret=
+extremum.functions.api.keycloak.username=
+extremum.functions.api.keycloak.password=
+```
+
+```extremum.functions.api.keycloak.uri``` - uri keycloak. Необязательный параметр. Если не указывать, то он будет сформирован из
+```baseUrl``` и ```xAppId```.
+
+```extremum.functions.api.keycloak.get.token.path``` - путь до получения token. По умолчанию ```/realms/extremum/protocol/openid-connect/token```.
 
 ### Подключаемый api
 

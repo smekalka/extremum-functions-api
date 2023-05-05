@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change type format for storage trigger parameters
 - Remove operation from storage trigger parameter
 - Improve Readme
+- Rename parameters, improve setting parameters
 
 ## [3.0.0] - 2023-03-24
 

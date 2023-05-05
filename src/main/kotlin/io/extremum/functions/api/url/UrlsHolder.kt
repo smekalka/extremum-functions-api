@@ -5,20 +5,29 @@ import org.springframework.stereotype.Component
 
 @Component
 internal class UrlsHolder(
-    @Value("\${apiBaseUrl}")
-    baseUrl: String,
-    @Value("\${xAppId}")
+    @Value("\${extremum.functions.api.consul.uri:}")
+    consulUri: String = "",
+    @Value("\${extremum.functions.api.keycloak.uri:}")
+    keycloakUri: String = "",
+    @Value("\${extremum.functions.api.baseUrl:}")
+    baseUrl: String = "",
+    @Value("\${extremum.functions.api.xAppId}")
     xAppId: String,
 ) {
 
-    val consulUrl: String = getConsulUrl(baseUrl)
+    val consulUri: String = getConsulUri(consulUri, baseUrl)
 
-    val keycloakUrl: String = getKeycloakUrl(baseUrl, xAppId)
+    val keycloakUri: String = getKeycloakUri(keycloakUri, baseUrl, xAppId)
 
     private companion object {
-        fun getConsulUrl(baseUrl: String): String = baseUrl.replace("://api", "://consul")
+        fun getConsulUri(consulUri: String, baseUrl: String): String =
+            consulUri.ifEmpty {
+                baseUrl.replace("://api", "://consul")
+            }
 
-        fun getKeycloakUrl(baseUrl: String, xAppId: String): String =
-            baseUrl.replace("://api", "://auth.app-$xAppId")
+        fun getKeycloakUri(keycloakUri: String, baseUrl: String, xAppId: String): String =
+            keycloakUri.ifEmpty {
+                baseUrl.replace("://api", "://auth.app-$xAppId")
+            }
     }
 }

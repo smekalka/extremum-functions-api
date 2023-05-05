@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 
 @Service
 internal class CredentialService(
-    @Value("\${xAppId}")
+    @Value("\${extremum.functions.api.xAppId}")
     private val xAppId: String,
     private val keycloakService: KeycloakService,
 ) {
