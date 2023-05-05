@@ -33,6 +33,7 @@ dependencies {
     implementation("io.extremum:extremum-model-tools:$extremumToolsVersion")
     testImplementation("io.extremum:extremum-test-tools:$extremumToolsVersion")
 
+    implementation("org.springframework.boot:spring-boot-autoconfigure:3.0.6")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework:spring-webflux")
     implementation("org.jetbrains.kotlin:kotlin-reflect")

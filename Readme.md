@@ -131,6 +131,14 @@ extremum.functions.api.keycloak.password=
 
 ```extremum.functions.api.keycloak.get.token.path``` - путь до получения token. По умолчанию ```/realms/extremum/protocol/openid-connect/token```.
 
+#### Отключение автоконфигурации
+
+Если необходимо отключить автоконфигурацию, нужно задать следующий параметр в application.properties:
+
+```properties
+extremum.functions.api.autoconfiguration=false
+```
+
 ### Подключаемый api
 
 После имплементации библиотеки доступны запросы

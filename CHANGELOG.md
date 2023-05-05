@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove operation from storage trigger parameter
 - Improve Readme
 - Rename parameters, improve setting parameters
+- Support disabling autoconfiguration
 
 ## [3.0.0] - 2023-03-24
 
