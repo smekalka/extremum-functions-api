@@ -7,6 +7,6 @@ import org.springframework.context.annotation.PropertySource
 
 @Configuration
 @ComponentScan
-@PropertySource("classpath:library.properties")
+@PropertySource("classpath:functions.api.properties")
 @ConditionalOnProperty(prefix = "extremum.functions.api", name = ["autoconfiguration"], havingValue = "true", matchIfMissing = true)
 class FunctionsApiConfiguration
