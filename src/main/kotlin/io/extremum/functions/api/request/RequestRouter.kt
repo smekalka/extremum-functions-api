@@ -108,7 +108,7 @@ internal class RequestRouter(
         val triggerBody = body.convertValueWithLog<CallTriggerBody>()
         val rawEventType = triggerBody.messages.first().eventMetadata.eventType
         val split = rawEventType.split(".")
-        return split.size > 3 && split[3] == EVENT_TYPE_STORAGE_MARK
+        return split.contains(EVENT_TYPE_STORAGE_MARK)
     }
 
     private companion object {

@@ -65,7 +65,7 @@ class RequestRouterTest {
         runBlocking {
             whenever(functionsService.onStorageTrigger(any(), any())).then { }
 
-            val message1 = callStorageTriggerMessage("1")
+            val message1 = callStorageTriggerMessage("1", eventType = "extremum.storage.ObjectDelete")
             val message2 = callStorageTriggerMessage("2", eventType = "yandex.cloud.events.storage.ObjectCreate")
             val message3 = callStorageTriggerMessage("3")
             val functionName1 = "f1"
