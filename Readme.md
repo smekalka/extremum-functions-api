@@ -26,7 +26,6 @@ class MyFunctionApplication
 **3. Создание необходимых функций**
  - функция должна иметь аннотацию ```@Function```;
  - функция должна быть унаследована от ```BasePackageFunction```, должна реализовывать ее методы ```onStorageTrigger``` и ```onSignal```;
- - функция должна иметь ```public``` поле типа ```Context``` с аннотацией ```@FunctionContext```;
  - вызываемый метод функции должен иметь аннотацию ```@FunctionMethod```.
 
 Пример функции
@@ -43,15 +42,12 @@ import io.extremum.functions.api.function.model.StorageTriggerParameters
 @Function(name = "number-func")
 class NumberFunction : BasePackageFunction {
 
-    @FunctionContext
-    val context = Context.EMPTY
-
    /**
     * Выполняется при запросе к функции пакета (основной метод функции)
     */
     @FunctionMethod
-    fun launch(params: Map<String, Any?>): Int {
-        // на момент вызова в context-е заполнены headers из тела запроса
+    fun launch(context: Context, params: Map<String, Any?>): Int {
+        // в context-е заполнены headers из тела запроса
 
         // реализация метода
     }
@@ -59,8 +55,8 @@ class NumberFunction : BasePackageFunction {
     /**
      * Выполняется при получении сообщения от триггера Object Storage
      */
-    override suspend fun onStorageTrigger(parameters: StorageTriggerParameters) {
-        // на момент вызова в context-е заполнены headers
+    override suspend fun onStorageTrigger(context: Context, parameters: StorageTriggerParameters) {
+        // в context-е заполнены headers
 
         // реализация метода
     }
@@ -68,8 +64,8 @@ class NumberFunction : BasePackageFunction {
     /**
      * Выполняется при получении сигнала
      */
-    override suspend fun onSignal(parameters: SignalParameters) {
-        // на момент вызова в context-е заполнены headers
+    override suspend fun onSignal(context: Context, parameters: SignalParameters) {
+        // в context-е заполнены headers
 
         // реализация метода
     }
@@ -85,8 +81,8 @@ class NumberFunction : BasePackageFunction {
 
 Требования к основному методу функции (с аннотацией @FunctionMethod):
  - Метод, помеченный аннотацией ```@FunctionMethod```, (или основной метод) должен быть только один в функции.
- - Метод должен принимать один и только один параметр. Это может быть свой объект, map, коллекция, число и др. 
-   Параметр может быть ```nullable```.
+ - Метод должен принимать два параметра: context и произвольный параметр. Это может быть свой объект, map, коллекция, число и др.
+   Произвольный параметр может быть ```nullable```.
  - Метод может возвращать любое значение, в том числе ```nullable```, или не возвращать вовсе, если не требуется.
 
 **4. Добавление параметров в application.properties**

@@ -1,7 +1,6 @@
 package io.extremum.functions.api.function.util
 
 import io.extremum.common.annotation.function.Function
-import io.extremum.common.annotation.function.FunctionContext
 import io.extremum.common.annotation.function.FunctionMethod
 import io.extremum.common.annotation.function.FunctionPackage
 import io.extremum.functions.api.function.BasePackageFunction
@@ -12,7 +11,6 @@ import org.springframework.context.ApplicationContext
 import org.springframework.core.annotation.MergedAnnotation
 import org.springframework.core.annotation.MergedAnnotations
 import org.springframework.stereotype.Service
-import java.lang.reflect.Field
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.functions
@@ -42,7 +40,6 @@ internal class FunctionInfoFacilities(
         )
         return FunctionInfo(
             function,
-            getContextField(function),
             method,
             methodParameterType,
             onStorageTriggerMethod,
@@ -60,12 +57,15 @@ internal class FunctionInfoFacilities(
                 "Function ${function.javaClass} has no method with annotation FunctionMethod"
             )
         val parameters = method.parameters
-        // метод с одним параметром - это метод с 2 KParameter, первый из которых имеет тип самого класса-функции
-        if (parameters.size != 2 || parameters[0].type.javaType != function::class.java) {
-            throw IllegalStateException("Method $method must have single parameter")
+        // метод с двумя параметрами - это метод с 3 KParameter, первый из которых имеет тип самого класса-функции
+        if (parameters.size != 3 ||
+            parameters[0].type.javaType != function::class.java ||
+            parameters[1].type.javaType != Context::class.java
+        ) {
+            throw IllegalStateException("Method $method must have two parameters, first of them must be Context")
         }
         method.isAccessible = true
-        return method to parameters[1].type.classifier as KClass<*>
+        return method to parameters[2].type.classifier as KClass<*>
     }
 
     @OptIn(ExperimentalStdlibApi::class)
@@ -75,21 +75,10 @@ internal class FunctionInfoFacilities(
         methodName: String,
         parameterType: KClass<*>
     ): KFunction<*> =
-        methods.find { it.name == methodName && it.parameters[1].type.javaType == parameterType.java }
+        methods.find { it.name == methodName && it.parameters[2].type.javaType == parameterType.java }
             ?: throw IllegalStateException(
                 "Function ${function.javaClass} has no method '$methodName' with parameter $parameterType"
             )
-
-    private fun getContextField(function: BasePackageFunction): Field {
-        val fields = function.javaClass.declaredFields
-        val contextField = fields.find { it.isAnnotationPresent(FunctionContext::class.java) }
-            ?: throw IllegalStateException("Function ${function.javaClass} has no field with annotation FunctionContext")
-        if (contextField.type != Context::class.java) {
-            throw IllegalStateException("Field $contextField must have io.extremum.functions.api.model.Context type")
-        }
-        contextField.isAccessible = true
-        return contextField
-    }
 
     fun getPackageName(): String {
         val beanWithFunctionPackageAnnotation =
@@ -147,7 +136,6 @@ internal class FunctionInfoFacilities(
      */
     data class FunctionInfo(
         val function: BasePackageFunction,
-        val contextField: Field,
         /** Основной метод функции - метод для прямого вызова */
         val method: KFunction<*>,
         /** Тип параметра основного метода */

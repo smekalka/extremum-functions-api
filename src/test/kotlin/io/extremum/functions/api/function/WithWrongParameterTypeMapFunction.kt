@@ -18,17 +18,17 @@ class WithWrongParameterTypeMapFunction : BasePackageFunction {
     }
 
     @FunctionMethod
-    fun launch(params: Map<Int, Any?>): Int {
+    fun launch(context: Context, params: Map<Int, Any?>): Int {
         println("launched ${this.javaClass.simpleName} with params: $params\n    and context: $context")
         return params.keys.first()
     }
 
-    override suspend fun onStorageTrigger(parameters: StorageTriggerParameters) {
+    override suspend fun onStorageTrigger(context: Context, parameters: StorageTriggerParameters) {
         println("\nlaunched ${this.javaClass.simpleName}.onStorageTrigger\n\n    with params: $parameters" +
                 "\n\n    and context: $context")
     }
 
-    override suspend fun onSignal(parameters: SignalParameters) {
+    override suspend fun onSignal(context: Context, parameters: SignalParameters) {
         println("\nlaunched ${this.javaClass.simpleName}.onSignal\n\n    with params: $parameters" +
                 "\n\n    and context: $context")
     }

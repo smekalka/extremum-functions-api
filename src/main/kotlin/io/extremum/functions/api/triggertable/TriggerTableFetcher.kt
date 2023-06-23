@@ -1,8 +1,8 @@
 package io.extremum.functions.api.triggertable
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import io.extremum.functions.api.url.UrlsHolder
 import io.extremum.functions.api.function.util.Base64Decoder.base64Decode
+import io.extremum.functions.api.url.UrlsHolder
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service

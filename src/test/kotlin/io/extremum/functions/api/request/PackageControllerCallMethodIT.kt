@@ -54,11 +54,7 @@ class PackageControllerCallMethodIT {
             val testValue = 22271
             mapFunction.value = testValue
             val result = packageController.call(body(packageName, "map-f").convertToMap())
-            assertThat(result.result).isEqualTo(parameters + ("value" to testValue))
-
-            val context = mapFunction.context
-            assertThat(context)
-                .hasFieldOrPropertyWithValue(Context::headers.name, mapOf(HttpHeaders.AUTHORIZATION to token))
+            assertThat(result.result).isEqualTo(parameters + ("value" to testValue) + mapOf(HttpHeaders.AUTHORIZATION to token))
         }
     }
 
@@ -69,11 +65,8 @@ class PackageControllerCallMethodIT {
             val testValue = 22271
             mapFunction.value = testValue
             val result = packageController.call(body(packageName, "map-f", parameters.toJson()).convertToMap())
-            assertThat(result.result).isEqualTo(parameters + ("value" to testValue))
+            assertThat(result.result).isEqualTo(parameters + ("value" to testValue) + mapOf(HttpHeaders.AUTHORIZATION to token))
 
-            val context = mapFunction.context
-            assertThat(context)
-                .hasFieldOrPropertyWithValue(Context::headers.name, mapOf(HttpHeaders.AUTHORIZATION to token))
         }
     }
 

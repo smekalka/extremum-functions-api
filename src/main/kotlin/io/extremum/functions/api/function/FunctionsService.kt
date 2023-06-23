@@ -52,44 +52,35 @@ internal class FunctionsService(
             throw UnsupportedPackageNameException(packageName = packageName, availablePackageName = this.packageName)
         }
 
-        val (function, contextField, method, methodParameterType) = getFunction(functionName)
+        val (function, method, methodParameterType) = getFunction(functionName)
         logger.info("Call $packageName.$functionName.${method.name}")
-
-        contextField.set(function, context)
 
         val convertedParams = params?.convertParams(targetType = methodParameterType, method)
         return if (method.isSuspend) {
-            method.callSuspend(function, convertedParams)
+            method.callSuspend(function, context, convertedParams)
         } else {
-            method.call(function, convertedParams)
+            method.call(function, context, convertedParams)
         }
     }
 
     suspend fun onStorageTrigger(functionName: String, params: StorageTriggerParameters) {
         val functionsInfo = getFunctionNoThrow(functionName) ?: return
-        setCredentialContextForTrigger(functionName, functionsInfo)
-        functionsInfo.onStorageTriggerMethod.callSuspend(functionsInfo.function, params)
+        val context = getCredentialContextForTrigger(functionName)
+        functionsInfo.onStorageTriggerMethod.callSuspend(functionsInfo.function, context, params)
     }
 
     suspend fun onSignal(functionName: String, params: SignalParameters) {
         val functionsInfo = getFunctionNoThrow(functionName) ?: return
-        setCredentialContextForTrigger(functionName, functionsInfo)
-        functionsInfo.onSignalMethod.callSuspend(functionsInfo.function, params)
+        val context = getCredentialContextForTrigger(functionName)
+        functionsInfo.onSignalMethod.callSuspend(functionsInfo.function, context, params)
     }
 
-    private suspend fun setCredentialContextForTrigger(
-        functionName: String,
-        functionsInfo: FunctionInfo
-    ) {
-        val context = Context(
+    private suspend fun getCredentialContextForTrigger(functionName: String): Context =
+        Context(
             headers = credentialService.getHeaders(),
             `package` = packageName,
             function = functionName
         )
-        with(functionsInfo) {
-            contextField.set(function, context)
-        }
-    }
 
     private fun getFunctionNoThrow(functionName: String): FunctionInfo? = functions[functionName] ?: kotlin.run {
         logger.warning("Unsupported function with name $functionName. Available: $functionNames.")
