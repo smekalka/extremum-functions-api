@@ -1,7 +1,7 @@
 package io.extremum.functions.api.triggertable
 
 import io.extremum.functions.api.function.FunctionsService
-import io.extremum.functions.api.triggertable.TriggerTableParser.parseTriggerTable
+import io.extremum.functions.api.triggertable.TriggerTableParser.getFunctionInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -25,11 +25,11 @@ class TriggerTableService {
     suspend fun getTriggerTable(): Map<String, List<String>> {
         triggerTable?.run { return this }
 
-        val triggerTableString = triggerTableFetcher.getTriggerTableString()
-        val parsed = parseTriggerTable(triggerTableString)
-        val filtered = parsed.mapNotNull { (triggerId, functions) ->
+        val triggerTableMap = triggerTableFetcher.getTriggerTableMap()
+        val filtered = triggerTableMap.mapNotNull { (triggerId, functions) ->
             val filteredFunctions = functions.mapNotNull {
-                if (it.packageName == packageName) it.functionName else null
+                val info = getFunctionInfo(it)
+                if (info.packageName == packageName) info.functionName else null
             }
             if (filteredFunctions.isEmpty()) {
                 null

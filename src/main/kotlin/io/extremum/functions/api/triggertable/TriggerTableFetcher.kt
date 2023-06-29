@@ -1,8 +1,9 @@
 package io.extremum.functions.api.triggertable
 
-import com.fasterxml.jackson.annotation.JsonProperty
-import io.extremum.functions.api.function.util.Base64Decoder.base64Decode
 import io.extremum.functions.api.url.UrlsHolder
+import io.extremum.functions.api.keycloak.CredentialService
+import io.extremum.model.tools.mapper.MapperUtils.convertValue
+import io.extremum.sharedmodels.dto.Response
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -16,35 +17,38 @@ internal class TriggerTableFetcher(
     urlsHolder: UrlsHolder,
     @Value("\${extremum.functions.api.consul.trigger.table.path}")
     private val triggerTablePath: String,
+    private val credentialService: CredentialService,
 ) {
 
     private val logger = Logger.getLogger(this::class.qualifiedName)
 
-    private val uri = urlsHolder.consulUri
+    private val uri = urlsHolder.baseUrl
 
     private val webClient: WebClient = WebClient.builder()
         .baseUrl(uri)
         .build()
 
-    suspend fun getTriggerTableString(): String =
-        webClient
+    suspend fun getTriggerTableMap(): Map<String, List<String>> {
+        val headers = credentialService.getHeaders()
+        return webClient
             .get()
             .uri(triggerTablePath)
+            .apply {
+                headers.forEach { (name, value) ->
+                    this.header(name, value)
+                }
+            }
             .awaitExchange { response ->
                 val statusCode = response.statusCode()
                 if (statusCode != HttpStatus.OK) {
                     val illegalStateException =
-                        IllegalStateException("Request to consul for trigger table $uri$triggerTablePath failed with code $statusCode")
+                        IllegalStateException("Request for trigger table $uri$triggerTablePath failed with code $statusCode")
                     logger.severe(illegalStateException.message)
                     throw illegalStateException
                 }
-                val responseBody = response.awaitBody<List<TriggerTableResponse>>()
+                val responseBody = response.awaitBody<Response>()
                 logger.info("Response status code: $statusCode with body $responseBody")
-                responseBody.first().value.base64Decode()
+                responseBody.result.convertValue()
             }
-
-    private data class TriggerTableResponse(
-        @JsonProperty("Value")
-        val value: String
-    )
+    }
 }

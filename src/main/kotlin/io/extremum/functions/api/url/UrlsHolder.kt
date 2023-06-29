@@ -10,7 +10,7 @@ internal class UrlsHolder(
     @Value("\${extremum.functions.api.keycloak.uri:}")
     keycloakUri: String = "",
     @Value("\${extremum.functions.api.baseUrl:}")
-    baseUrl: String = "",
+    final val baseUrl: String = "",
     @Value("\${extremum.functions.api.xAppId}")
     xAppId: String,
 ) {
