@@ -15,9 +15,9 @@ class TriggerTableFetcherIT {
 
     @Disabled("For manual launch only. Test sends real request")
     @Test
-    fun getTriggerTableString() {
+    fun getTriggerTableMap() {
         runBlocking {
-            val result = triggerTableFetcher.getTriggerTableString()
+            val result = triggerTableFetcher.getTriggerTableMap()
             println("result: $result")
             assertThat(result).isNotNull
         }

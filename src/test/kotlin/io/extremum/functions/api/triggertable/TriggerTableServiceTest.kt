@@ -26,21 +26,20 @@ class TriggerTableServiceTest {
     fun getTriggerTable() {
         runBlocking {
             whenever(functionsService.getPackageName()).thenReturn("packageNameValue")
-            whenever(triggerTableFetcher.getTriggerTableString()).thenReturn(
-                """
-c9266bad-b873-457b-9b78-d7a8cf84a398subc9266bad-b873-457b-9b78-d7a8cf84a398: []
-storage.extr-1234-0-testtrigger.create: []
-storage.extr-1234-0-testtrigger.delete:
-    - packageNameValue.log-operations3
-storage.extr-ajev84ud35k4m2lo4n39-0-autotest.create:
-    - log-operations0
-    - packageNameValue.log-operations1
-    - packageNameValue.log-operations2
-    - otherPackageName.log-operations4
-storage.extr-ajev84ud35k4m2lo4n39-0-example111.create: []
-storage.extr-ajev84ud35k4m2lo4n39-0-testtrigger.create:
-    - functionbp
-                """
+            whenever(triggerTableFetcher.getTriggerTableMap()).thenReturn(
+                mapOf(
+                    "c9266bad-b873-457b-9b78-d7a8cf84a398subc9266bad-b873-457b-9b78-d7a8cf84a398" to listOf(),
+                    "storage.extr-1234-0-testtrigger.create" to listOf(),
+                    "storage.extr-1234-0-testtrigger.delete" to listOf("packageNameValue.log-operations3"),
+                    "storage.extr-ajev84ud35k4m2lo4n39-0-autotest.create" to listOf(
+                        "log-operations0",
+                        "packageNameValue.log-operations1",
+                        "packageNameValue.log-operations2",
+                        "otherPackageName.log-operations4",
+                    ),
+                    "storage.extr-ajev84ud35k4m2lo4n39-0-example111.create" to listOf(),
+                    "storage.extr-ajev84ud35k4m2lo4n39-0-example111.create" to listOf("functionbp"),
+                )
             )
             val result = triggerTableService.getTriggerTable()
 
