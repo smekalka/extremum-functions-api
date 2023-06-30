@@ -15,8 +15,8 @@ val extremumVersion = "3.0.0"
 val artifact = "functions-api"
 val artifactDescription = "Api for functions' package"
 val artifactUrl = "github.com/smekalka/extremum-functions-api"
-val artifactVersion = "3.2.0-rc.6"
-val extremumToolsVersion = "3.2.0-rc.2"
+val artifactVersion = "3.2.0-rc.7"
+val extremumToolsVersion = "3.2.0-rc.3"
 
 group = extremumGroup
 version = artifactVersion

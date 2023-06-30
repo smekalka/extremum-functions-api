@@ -15,7 +15,7 @@ import java.util.logging.Logger
 @Service
 internal class TriggerTableFetcher(
     urlsHolder: UrlsHolder,
-    @Value("\${extremum.functions.api.consul.trigger.table.path}")
+    @Value("\${extremum.functions.api.trigger.table.path}")
     private val triggerTablePath: String,
     private val credentialService: CredentialService,
 ) {

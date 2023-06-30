@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improve Readme
 - Rename parameters, improve setting parameters
 - Support disabling autoconfiguration
+- Change delivery way of context to functions
+- Change source for trigger table
+- Remove parameters for consul 
 
 ## [3.0.0] - 2023-03-24
 

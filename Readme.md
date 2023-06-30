@@ -99,17 +99,13 @@ extremum.functions.api.baseUrl=
 
 Если их не указывать, то они заполнятся из переменных среды ```xAppId``` и ```apiBaseUrl``` соответственно.
 
-#### Параметры для consul
+#### Параметры для таблицы подписок (trigger table)
 
 ```properties
-extremum.functions.api.consul.uri=
-extremum.functions.api.consul.trigger.table.path=
+extremum.functions.api.trigger.table.path=
 ```
 
-```extremum.functions.api.consul.uri``` - uri консула. Необязательный параметр. Если не указывать, то он будет сформирован из ```baseUrl```.
-
-```extremum.functions.api.consul.trigger.table.path``` - дополнительный путь в uri консула до trigger table. 
-По умолчанию ```/v1/kv/trigger_table_app${xAppId}```, где ```xAppId``` - переменная среды.
+```extremum.functions.api.trigger.table.path``` - дополнительный путь до trigger table. По умолчанию ```/v3/management/triggers```.
 
 #### Параметры для keycloak
 
