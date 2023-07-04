@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.0.0"
+    id("org.springframework.boot") version "2.7.13"
     id("io.spring.dependency-management") version "1.1.0"
     kotlin("jvm") version "1.7.21"
     kotlin("plugin.spring") version "1.7.21"
@@ -15,12 +15,12 @@ val extremumVersion = "3.0.0"
 val artifact = "functions-api"
 val artifactDescription = "Api for functions' package"
 val artifactUrl = "github.com/smekalka/extremum-functions-api"
-val artifactVersion = "3.2.0-rc.7"
-val extremumToolsVersion = "3.2.0-rc.3"
+val artifactVersion = "3.2.0-rc.8"
+val extremumToolsVersion = "3.2.0-rc.4"
 
 group = extremumGroup
 version = artifactVersion
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenCentral()
@@ -33,7 +33,8 @@ dependencies {
     implementation("io.extremum:extremum-model-tools:$extremumToolsVersion")
     testImplementation("io.extremum:extremum-test-tools:$extremumToolsVersion")
 
-    implementation("org.springframework.boot:spring-boot-autoconfigure:3.0.6")
+    implementation("org.springframework.boot:spring-boot-autoconfigure")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework:spring-webflux")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -51,7 +52,7 @@ dependencies {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
+        jvmTarget = "1.8"
     }
 }
 

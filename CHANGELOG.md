@@ -15,7 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support disabling autoconfiguration
 - Change delivery way of context to functions
 - Change source for trigger table
-- Remove parameters for consul 
+- Remove parameters for consul
+- Add java 8 compatibility
 
 ## [3.0.0] - 2023-03-24
 
